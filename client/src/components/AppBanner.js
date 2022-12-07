@@ -37,6 +37,14 @@ export default function AppBanner() {
         store.closeCurrentList();
     }
 
+    const handlePersonClick = () => {
+        //TODO
+    }
+
+    const handleMultipleClick = () => {
+        //TODO
+    }
+
     const menuId = 'primary-search-account-menu';
     const loggedOutMenu = (
         <Menu
@@ -75,7 +83,24 @@ export default function AppBanner() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
-        </Menu>        
+        </Menu>  
+        
+    function getOptions() {
+        if (auth.loggedIn) {
+            return (
+                <div>
+                <Link class="link" onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>
+                <Link class = "link" onClick = {handlePersonClick}>👤</Link>
+                <Link class = "link" onClick = {handleMultipleClick}>👥</Link>
+                </div>
+            )
+        } else {
+            return <Link onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>
+        }
+
+    }
+
+    let options = getOptions()
 
     let editToolbar = "";
     let menu = loggedOutMenu;
@@ -90,9 +115,11 @@ export default function AppBanner() {
         let userInitials = auth.getUserInitials();
         console.log("userInitials: " + userInitials);
         if (loggedIn) 
-            return <div>{userInitials}</div>;
+            return <div>
+                {userInitials}
+                </div>;
         else
-            return <AccountCircle />;
+            return <div>G</div>;
     }
 
     return (
@@ -105,7 +132,7 @@ export default function AppBanner() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
-                        <Link onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>
+                        {options}
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                     <Box sx={{ height: "90px", display: { xs: 'none', md: 'flex' } }}>
