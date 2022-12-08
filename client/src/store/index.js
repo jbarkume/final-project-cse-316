@@ -301,6 +301,26 @@ function GlobalStoreContextProvider(props) {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
     }
+    // duplicates current list
+    store.duplicateCurrentList = async function() {
+        let list = store.currentList
+        const response = await api.createPlaylist(list.name, list.songs, auth.user.email)
+        console.log("duplicateList response: " + response);
+        if (response.status === 201) {
+            tps.clearAllTransactions();
+            let newList = response.data.playlist;
+            storeReducer({
+                type: GlobalStoreActionType.CREATE_NEW_LIST,
+                payload: newList
+            }
+            );
+        }
+        else {
+            console.log("API FAILED TO DUPLICATE LIST");
+        }
+    }
+
+    
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = function () {
@@ -524,6 +544,11 @@ function GlobalStoreContextProvider(props) {
     }
     store.redo = function () {
         tps.doTransaction();
+    }
+    store.publish = function () {
+        let list = store.currentList;
+        list.published = true;
+        store.updateCurrentList();
     }
     store.canAddNewSong = function() {
         return (store.currentList !== null);

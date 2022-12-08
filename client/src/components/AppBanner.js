@@ -90,8 +90,8 @@ export default function AppBanner() {
             return (
                 <div>
                 <Link class="link" onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>
-                <Link class = "link" onClick = {handlePersonClick}>👤</Link>
-                <Link class = "link" onClick = {handleMultipleClick}>👥</Link>
+                <Link class = "link" onClick = {handlePersonClick} to='/'>👤</Link>
+                <Link class = "link" onClick = {handleMultipleClick} to='/'>👥</Link>
                 </div>
             )
         } else {

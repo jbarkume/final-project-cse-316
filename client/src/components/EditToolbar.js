@@ -27,6 +27,15 @@ function EditToolbar() {
     function handleClose() {
         store.closeCurrentList();
     }
+    function handlePublish() {
+        store.publish()
+        store.closeCurrentList();
+    }
+    function duplicate() {
+        store.duplicateCurrentList();
+        store.closeCurrentList();
+    }
+
     return (
         <div id="edit-toolbar">
             <Button
@@ -57,6 +66,22 @@ function EditToolbar() {
                 variant="contained">
                     <CloseIcon />
             </Button>
+
+            {!store.currentList.published &&
+                <Button 
+                    id='publish-button'
+                    onClick={handlePublish}
+                    variant="contained">
+                    Publish
+                </Button>
+            }
+            <Button
+                id='duplicate-button'
+                onClick={duplicate}
+                variant='contained'>
+                Duplicate
+            </Button>
+            
         </div>
     )
 }

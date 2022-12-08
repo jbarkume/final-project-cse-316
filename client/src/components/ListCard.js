@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
+import api from '../store/store-request-api'
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -18,7 +19,8 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
-    const { idNamePair, selected } = props;
+    const { idNamePair, selected, published, changeFunction } = props;
+    console.log(published)
 
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
@@ -73,6 +75,27 @@ function ListCard(props) {
     if (store.isListNameEditActive) {
         cardStatus = true;
     }
+
+    function publish() {
+        if (published)
+            return <p style={{"fontSize": 20, "color": "green"}}>{"Published"}</p>
+        else
+           return <p style={{"fontSize": 20, "color": "red"}}>{"Not Published"}</p>
+    }
+
+    async function handleLike(event) {
+        //Add likes
+    }
+
+    function handleDislike(event) {
+        // Add dislikes
+    }
+
+    function handleClick(event) {
+        event.stopPropagation();
+        changeFunction(idNamePair._id);
+    }
+
     let cardElement =
         <ListItem
             id={idNamePair._id}
@@ -80,11 +103,25 @@ function ListCard(props) {
             sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1 }}
             style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}
             button
-            onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
+            onDoubleClick={(event) => {
+                    handleLoadList(event, idNamePair._id)
             }}
+            onClick={handleClick}
         >
-            <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+            <Box sx={{ p: 1, flexGrow: 1 }}>
+                <p style={{"margin": 0}}>{idNamePair.name}</p>
+                {publish()}
+            </Box>
+            <Box sx={{ p: 1 }}>
+                <IconButton onClick={handleLike} aria-label='edit'>
+                👍
+                </IconButton>
+            </Box>
+            <Box sx={{ p: 1 }}>
+                <IconButton onClick={handleDislike} aria-label='edit'>
+                👎
+                </IconButton>
+            </Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
                     <EditIcon style={{fontSize:'48pt'}} />
